@@ -238,11 +238,11 @@
           document.getElementById(`step-${step}`).classList.add('active');
         }
   
-        // Camera activation (rear camera)
+        // Camera activation (rear camera only)
         document.getElementById('photo-btn').addEventListener('click', () => {
           if (navigator.mediaDevices?.getUserMedia) {
             navigator.mediaDevices.getUserMedia({
-              video: { facingMode: { ideal: "environment" } }
+              video: { facingMode: { exact: "environment" } } // Force rear camera
             })
             .then(stream => {
               const video = document.getElementById('video');
