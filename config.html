@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mealkitz - Configuración</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+      body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; padding-top: 1rem; }
+      .navbar { box-shadow: 0 2px 4px rgba(0,0,0,.1); background-color: #fff; }
+      .navbar-brand { font-weight: 600; color: #123A62 !important; }
+      .table th, .table td { vertical-align: middle; }
+      main.container {
+        background: #fff;
+        padding: 2rem;
+        border-radius: .5rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-light bg-white navbar-expand-md py-2">
+      <div class="container-fluid px-4">
+        <a class="navbar-brand" href="index.html">
+          <img src="Images/mk_logo_long.jpeg"style="height: 40px; margin-right: 10px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarIcons" aria-controls="navbarIcons" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarIcons">
+          <div class="d-flex align-items-center ms-auto">
+            <button class="btn btn-link text-dark me-3" title="Notificaciones"><i class="bi bi-bell-fill fs-4"></i></button>
+            <button class="btn btn-link text-dark me-3" title="Compartir"><i class="bi bi-share-fill fs-4"></i></button>
+            <button class="btn btn-link text-dark me-3" title="Buscar"><i class="bi bi-search fs-4"></i></button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container mt-4">
+      <div class="text-center mb-4">
+        <h2 class="fs-4 fs-md-2">Configurar Productos</h2>
+      </div>
+      <div class="row g-3">
+        <div class="col-12">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="text-center mb-3">
+                <button id="add-product-btn" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#productModal">
+                  <i class="bi bi-plus-circle-fill me-1"></i>Añadir Producto
+                </button>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Producto</th>
+                      <th>Precio</th>
+                      <th>Margen</th>
+                    </tr>
+                  </thead>
+                  <tbody id="product-table-body">
+                    <!-- Filas generadas dinámicamente -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal para añadir/editar producto -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Añadir / Editar Producto</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <form id="product-form">
+              <div class="mb-3">
+                <label for="product-name" class="form-label">Nombre del Producto</label>
+                <input type="text" id="product-name" class="form-control" required>
+              </div>
+              <input type="hidden" id="item-id">
+              <div class="mb-3">
+                <label for="product-code" class="form-label">Código de Producto</label>
+                <input type="text" id="product-code" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label for="product-price" class="form-label">Precio ($)</label>
+                <input type="number" id="product-price" class="form-control" min="0" step="0.01" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Cargar Productos desde localStorage o array vacío
+      let productos = JSON.parse(localStorage.getItem('productos')) || [];
+      const tableBody = document.getElementById('product-table-body');
+      const form = document.getElementById('product-form');
+      const productModal = new bootstrap.Modal(document.getElementById('productModal'));
+
+      function renderTable() {
+        tableBody.innerHTML = '';
+        productos.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${item.business}</td>
+            <td>${item.code}</td>
+            <td>${item.name}</td>
+            <td>$${item.price.toFixed(2)}</td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      }
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const id = document.getElementById('item-id').value;
+        const business = document.getElementById('business-name').value.trim();
+        const code = document.getElementById('product-code').value.trim();
+        const name = document.getElementById('product-name').value.trim();
+        const price = parseFloat(document.getElementById('product-price').value);
+
+        if (id) {
+          const idx = productos.findIndex(i => i.id === id);
+          productos[idx] = { id, business, code, name, price };
+        } else {
+          const newId = 'P' + Date.now();
+          productos.push({ id: newId, business, code, name, price });
+        }
+
+        localStorage.setItem('productos', JSON.stringify(productos));
+        renderTable();
+        form.reset();
+        productModal.hide();
+      });
+
+      document.getElementById('add-product-btn').addEventListener('click', () => {
+        form.reset();
+        document.getElementById('item-id').value = '';
+      });
+
+      renderTable();
+    </script>
+  </body>
+</html>
