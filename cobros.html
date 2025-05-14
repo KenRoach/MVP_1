@@ -48,7 +48,7 @@
     <nav class="navbar navbar-light bg-white navbar-expand-md py-2">
       <div class="container-fluid px-4">
         <a class="navbar-brand" href="index.html">
-          <img src="image/mk_logo_long.jpeg" style="height: 40px; margin-right: 10px;" />
+          <img src="image/mk_logo_long.jpeg" style="height: 40px; margin-right: 10px;" alt="Mealkitz Logo" />
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarIcons" aria-controls="navbarIcons" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -194,10 +194,10 @@
           sum.innerHTML = '';
           const titles = {
             product: 'Producto',
-            business: 'Negocio',
-            datetime: 'Fecha y Hora',
-            price:    'Precio',
-            pay:      'Método de Pago'
+            business:'Negocio',
+            datetime:'Fecha y Hora',
+            price:   'Precio',
+            pay:     'Método de Pago'
           };
           const formatData = (k, v) => {
             if (k === 'datetime') {
@@ -238,11 +238,27 @@
           document.getElementById(`step-${step}`).classList.add('active');
         }
   
-        // Camera activation (rear camera only)
+        // Camera activation: force rear camera by deviceId
         document.getElementById('photo-btn').addEventListener('click', () => {
-          if (navigator.mediaDevices?.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({
-              video: { facingMode: { exact: "environment" } } // Force rear camera
+          if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+            return alert('API de cámara no compatible con este navegador.');
+          }
+
+          // Enumerate available video inputs
+          navigator.mediaDevices.enumerateDevices()
+            .then(devices => {
+              const videoInputs = devices.filter(d => d.kind === 'videoinput');
+              const backCamera = videoInputs.find(d =>
+                /back|rear|environment/i.test(d.label)
+              ) || videoInputs[0];
+
+              if (!backCamera) {
+                throw new Error('No se encontró cámara trasera.');
+              }
+
+              return navigator.mediaDevices.getUserMedia({
+                video: { deviceId: { exact: backCamera.deviceId } }
+              });
             })
             .then(stream => {
               const video = document.getElementById('video');
@@ -253,9 +269,6 @@
               console.error('Error cámara:', err);
               alert('No se pudo acceder a la cámara trasera. Verifica permisos.');
             });
-          } else {
-            alert('API de cámara no compatible con este navegador.');
-          }
         });
       });
     </script>
