@@ -44,10 +44,11 @@
       }
     </style>
   </head>
+  <body>
     <nav class="navbar navbar-light bg-white navbar-expand-md py-2">
       <div class="container-fluid px-4">
         <a class="navbar-brand" href="index.html">
-          <img src="image/mk_logo_long.jpeg"style="height: 40px; margin-right: 10px;">
+          <img src="image/mk_logo_long.jpeg" style="height: 40px; margin-right: 10px;" />
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarIcons" aria-controls="navbarIcons" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -193,10 +194,10 @@
           sum.innerHTML = '';
           const titles = {
             product: 'Producto',
-            business:'Negocio',
-            datetime:'Fecha y Hora',
-            price:   'Precio',
-            pay:     'Método de Pago'
+            business: 'Negocio',
+            datetime: 'Fecha y Hora',
+            price:    'Precio',
+            pay:      'Método de Pago'
           };
           const formatData = (k, v) => {
             if (k === 'datetime') {
@@ -237,19 +238,21 @@
           document.getElementById(`step-${step}`).classList.add('active');
         }
   
-        // Camera activation
+        // Camera activation (rear camera)
         document.getElementById('photo-btn').addEventListener('click', () => {
           if (navigator.mediaDevices?.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-              .then(stream => {
-                const video = document.getElementById('video');
-                video.srcObject = stream;
-                video.style.display = 'block';
-              })
-              .catch(err => {
-                console.error('Error cámara:', err);
-                alert('No se pudo acceder a la cámara. Verifica permisos.');
-              });
+            navigator.mediaDevices.getUserMedia({
+              video: { facingMode: { ideal: "environment" } }
+            })
+            .then(stream => {
+              const video = document.getElementById('video');
+              video.srcObject = stream;
+              video.style.display = 'block';
+            })
+            .catch(err => {
+              console.error('Error cámara:', err);
+              alert('No se pudo acceder a la cámara trasera. Verifica permisos.');
+            });
           } else {
             alert('API de cámara no compatible con este navegador.');
           }
