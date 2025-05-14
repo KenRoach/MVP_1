@@ -13,135 +13,162 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
     <style>
-      body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; padding-top: 1rem; }
-      .navbar { box-shadow: 0 2px 4px rgba(0,0,0,.1); background-color: #fff; }
-      .navbar-brand { font-weight: 600; color: #198754 !important; display: flex; align-items: center; }
-      .navbar-brand img { height: 40px; width: auto; object-fit: contain; margin-right: 10px; }
-      .card { max-width: 500px; margin: 2rem auto; }
-      .step { display: none; }
-      .step.active { display: block; }
-      .btn-step { width: 100%; }
-      main.container {
-        background: #fff;
-        padding: 2rem;
-        border-radius: .5rem;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        margin-top: 1rem;
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8f9fa;
+        padding-top: 1rem;
       }
-      #photo-btn { display: none; } /* hidden by default */
+      .navbar {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        background-color: #fff;
+      }
+      .navbar-brand {
+        font-weight: 600;
+        color: #198754 !important;
+      }
+      .card {
+        max-width: 500px;
+        margin: 2rem auto;
+      }
+      .step {
+        display: none;
+      }
+      .step.active {
+        display: block;
+      }
+      .btn-step {
+        width: 100%;
+      }
+      #photo-btn {
+        display: none; /* hidden by default */
+      }
     </style>
   </head>
   <body>
     <nav class="navbar navbar-light bg-white navbar-expand-md py-2">
       <div class="container-fluid px-4">
-
+        <a class="navbar-brand" href="#">Cobros Rápidos</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarIcons"
                 aria-controls="navbarIcons" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarIcons">
           <div class="d-flex align-items-center ms-auto">
-            <button class="btn btn-link text-dark me-3" title="Notificaciones"><i class="bi bi-bell-fill fs-4"></i></button>
-            <button class="btn btn-link text-dark me-3" title="Compartir"><i class="bi bi-share-fill fs-4"></i></button>
-            <button class="btn btn-link text-dark me-3" title="Buscar"><i class="bi bi-search fs-4"></i></button>
+            <button class="btn btn-link text-dark me-3" title="Notificaciones">
+              <i class="bi bi-bell-fill fs-4"></i>
+            </button>
+            <button class="btn btn-link text-dark me-3" title="Compartir">
+              <i class="bi bi-share-fill fs-4"></i>
+            </button>
+            <button class="btn btn-link text-dark me-3" title="Buscar">
+              <i class="bi bi-search fs-4"></i>
+            </button>
           </div>
         </div>
       </div>
     </nav>
     
     <main class="container mt-4">
-      <div class="text-center mb-4">
-        <h2 class="fs-4 fs-md-2">Cobros Rápidos</h2>
-      </div>
-
-      <div class="card-body">
-        <!-- Step 1 -->
-        <div id="step-1" class="step active">
-          <h6>Paso 1: Selecciona un producto</h6>
-          <select id="product-select" class="form-select mb-3">
-            <option value="">Seleccione un producto...</option>
-          </select>
-          <button id="next-1" class="btn btn-primary btn-step" disabled>Siguiente</button>
-        </div>
-
-        <!-- Step 2 -->
-        <div id="step-2" class="step">
-          <h6>Paso 2: Revisa negocio, fecha y precio</h6>
-          <input type="text" id="business" class="form-control mb-2" readonly placeholder="Empresa" />
-          <input type="text" id="datetime" class="form-control mb-2" readonly placeholder="Fecha y Hora" />
-          <input type="number" id="price" class="form-control mb-2" readonly placeholder="Precio" />
-          <div class="d-flex justify-content-between">
-            <button id="prev-2" class="btn btn-outline-secondary">Atrás</button>
-            <button id="next-2" class="btn btn-primary">Siguiente</button>
+      <div class="card">
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <h2 class="fs-4">Cobros Rápidos</h2>
           </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div id="step-3" class="step">
-          <h6>Paso 3: Método de pago</h6>
-          <div class="d-grid gap-2 mb-3">
-            <button class="btn btn-outline-primary pay-btn" data-pay="Yappy">Yappy</button>
-            <button class="btn btn-outline-secondary pay-btn" data-pay="Efectivo">Efectivo</button>
-            <button class="btn btn-outline-info pay-btn" data-pay="Tarjeta">Tarjeta</button>
+  
+          <!-- Step 1 -->
+          <div id="step-1" class="step active">
+            <h6>Paso 1: Selecciona un producto</h6>
+            <select id="product-select" class="form-select mb-3">
+              <option value="">Seleccione un producto...</option>
+            </select>
+            <button id="next-1" class="btn btn-primary btn-step" disabled>Siguiente</button>
           </div>
-          <button id="prev-3" class="btn btn-outline-secondary btn-step">Atrás</button>
-        </div>
-
-        <!-- Step 4 -->
-        <div id="step-4" class="step">
-          <h6>Paso 4: Confirmar y enviar</h6>
-          <ul class="list-group mb-3" id="summary"></ul>
-          <input type="tel" id="whatsapp" class="form-control mb-2" placeholder="Número de WhatsApp" />
-          <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
-            <button id="prev-4" class="btn btn-outline-secondary w-100 mb-2 mb-md-0">Atrás</button>
-            <!-- This button is hidden unless pay === 'Yappy' -->
-            <button id="photo-btn" class="btn btn-outline-info w-100 mb-2 mb-md-0">Tomar Foto</button>
-            <button id="send-btn" class="btn btn-success w-100">Procesar y Enviar</button>
+  
+          <!-- Step 2 -->
+          <div id="step-2" class="step">
+            <h6>Paso 2: Revisa negocio, fecha y precio</h6>
+            <input type="text" id="business" class="form-control mb-2" readonly placeholder="Negocio" />
+            <input type="text" id="datetime" class="form-control mb-2" readonly placeholder="Fecha y Hora" />
+            <input type="number" id="price" class="form-control mb-2" readonly placeholder="Precio" />
+            <div class="d-flex justify-content-between">
+              <button id="prev-2" class="btn btn-outline-secondary">Atrás</button>
+              <button id="next-2" class="btn btn-primary">Siguiente</button>
+            </div>
           </div>
-        </div>
-
-        <!-- Step 5 -->
-        <div id="step-5" class="step text-center">
-          <p class="fw-bold">¡Pedido procesado y enviado!</p>
-          <button id="restart" class="btn btn-link">Nuevo Pedido</button>
+  
+          <!-- Step 3 -->
+          <div id="step-3" class="step">
+            <h6>Paso 3: Método de pago</h6>
+            <div class="d-grid gap-2 mb-3">
+              <button class="btn btn-outline-primary pay-btn" data-pay="Yappy">Yappy</button>
+              <button class="btn btn-outline-secondary pay-btn" data-pay="Efectivo">Efectivo</button>
+              <button class="btn btn-outline-info pay-btn" data-pay="Tarjeta">Tarjeta</button>
+            </div>
+            <button id="prev-3" class="btn btn-outline-secondary btn-step">Atrás</button>
+          </div>
+  
+          <!-- Step 4 -->
+          <div id="step-4" class="step">
+            <h6>Paso 4: Confirmar y enviar</h6>
+            <ul class="list-group mb-3" id="summary"></ul>
+            <input type="tel" id="whatsapp" class="form-control mb-2" placeholder="Número de WhatsApp" />
+            <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+              <button id="prev-4" class="btn btn-outline-secondary w-100">Atrás</button>
+              <button id="photo-btn" class="btn btn-outline-info w-100">Tomar Foto</button>
+              <button id="send-btn" class="btn btn-success w-100">Procesar y Enviar</button>
+            </div>
+          </div>
+  
+          <!-- Step 5 -->
+          <div id="step-5" class="step text-center">
+            <p class="fw-bold">¡Pedido procesado y enviado!</p>
+            <button id="restart" class="btn btn-link">Nuevo Pedido</button>
+          </div>
         </div>
       </div>
     </main>
-
+  
     <!-- Camera video element (hidden by default) -->
     <div class="container mt-4">
       <video id="video" autoplay playsinline style="display: none; width: 100%; max-width: 500px; margin: 0 auto;"></video>
     </div>
-
+  
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         const products = [
           {id:'RS001', name:'California Roll', price:4.5, business:'Rolling Sushi'},
-          {id:'RS002', name:'Dragon Roll', price:5.75, business:'Rolling Sushi'},
+          {id:'RS002', name:'Dragon Roll',   price:5.75, business:'Rolling Sushi'},
           {id:'RS003', name:'Ensalada de Wakame', price:3.25, business:'Rolling Sushi'}
         ];
         let order = {};
         const select = document.getElementById('product-select');
+  
+        // Populate products
         products.forEach(p => {
           const o = document.createElement('option');
-          o.value = p.id; 
-          o.text = p.name;
+          o.value       = p.id;
+          o.text        = p.name;
           o.dataset.biz = p.business;
           o.dataset.pr  = p.price;
           select.add(o);
         });
+  
+        // Enable next on selection
         select.addEventListener('change', () => {
           document.getElementById('next-1').disabled = !select.value;
         });
+  
+        // Step 1 → 2
         document.getElementById('next-1').onclick = () => {
           const opt = select.selectedOptions[0];
-          order.product = opt.text;
+          order.product  = opt.text;
           order.business = opt.dataset.biz;
-          order.price = opt.dataset.pr;
+          order.price    = opt.dataset.pr;
           document.getElementById('business').value = order.business;
           document.getElementById('price').value    = order.price;
+  
           const now = new Date();
           const dia = String(now.getDate()).padStart(2,'0');
           const mes = String(now.getMonth()+1).padStart(2,'0');
@@ -150,51 +177,55 @@
           const min  = String(now.getMinutes()).padStart(2,'0');
           order.datetime = `${ano}-${mes}-${dia} ${hora}:${min}`;
           document.getElementById('datetime').value = order.datetime;
+  
           show(2);
         };
+  
+        // Navigation buttons
         document.getElementById('prev-2').onclick = () => show(1);
         document.getElementById('next-2').onclick = () => show(3);
         document.getElementById('prev-3').onclick = () => show(2);
-
+        document.getElementById('prev-4').onclick = () => show(3);
+        document.getElementById('restart').onclick = () => location.reload();
+  
+        // Payment selection
         document.querySelectorAll('.pay-btn').forEach(b => b.addEventListener('click', () => {
           order.pay = b.dataset.pay;
-
-          // Show or hide photo button based on payment method
           const photoBtn = document.getElementById('photo-btn');
           photoBtn.style.display = (order.pay === 'Yappy') ? 'block' : 'none';
-
-          // Build the summary
+  
+          // Build summary
           const sum = document.getElementById('summary');
           sum.innerHTML = '';
           const titles = {
-            'product': 'Producto',
-            'business': 'Negocio',
-            'datetime': 'Fecha y Hora',
-            'price': 'Precio',
-            'pay': 'Método de Pago'
+            product: 'Producto',
+            business:'Negocio',
+            datetime:'Fecha y Hora',
+            price:   'Precio',
+            pay:     'Método de Pago'
           };
-          const formatData = (k, value) => {
+          const formatData = (k, v) => {
             if (k === 'datetime') {
-              const [date, time] = value.split(' ');
-              const [y,m,d] = date.split('-');
-              return `${d}/${m}/${y} ${time}`;
+              const [d,t] = v.split(' ');
+              const [y,m,day] = d.split('-');
+              return `${day}/${m}/${y} ${t}`;
             }
             if (k === 'price') {
-              return `$${parseFloat(value).toFixed(2)}`;
+              return `$${parseFloat(v).toFixed(2)}`;
             }
-            return value;
+            return v;
           };
           ['product','business','datetime','price','pay'].forEach(k => {
             const li = document.createElement('li');
-            li.className = 'list-group-item';
+            li.className   = 'list-group-item';
             li.textContent = `${titles[k]}: ${formatData(k, order[k])}`;
             sum.append(li);
           });
-
+  
           show(4);
         }));
-
-        document.getElementById('prev-4').onclick = () => show(3);
+  
+        // Final send
         document.getElementById('send-btn').onclick = () => {
           const wa = document.getElementById('whatsapp').value.trim();
           if (!wa) {
@@ -203,16 +234,16 @@
           }
           show(5);
         };
-        document.getElementById('restart').onclick = () => location.reload();
-
-        function show(n) {
+  
+        // Utility to switch steps
+        function show(step) {
           for (let i = 1; i <= 5; i++) {
             document.getElementById(`step-${i}`).classList.remove('active');
           }
-          document.getElementById(`step-${n}`).classList.add('active');
+          document.getElementById(`step-${step}`).classList.add('active');
         }
-
-        // Camera activation when "Tomar Foto" is clicked
+  
+        // Camera activation
         document.getElementById('photo-btn').addEventListener('click', () => {
           if (navigator.mediaDevices?.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true })
